@@ -82,10 +82,10 @@ class generator(GameType):
             has_ball=False,
             stance=0
         ) for i, agent in enumerate(agents)])
-        teams = m(
-            red=v(*[p.index for p in players if p.team == Team.RED]),
-            blue=v(*[p.index for p in players if p.team == Team.BLUE])
-        )
+        # teams = m(
+        #     red=v(*[p.index for p in players if p.team == Team.RED]),
+        #     blue=v(*[p.index for p in players if p.team == Team.BLUE])
+        # )
         ball = m(
             type='ball',
             on_field=True,
@@ -100,7 +100,6 @@ class generator(GameType):
         state = SoccerState(
             current_player_id=0,
             players=players,
-            teams=teams,
             ball=ball,
             pitch=pitch,
             winner=None
@@ -220,7 +219,13 @@ class SoccerState(GameState):
     # Contains the players of each team. Keys are teams['red'] and
     # teams['blue']. Probably should switch to using the team enum in
     # the future.
-    teams = pmap_field(str, PVector)
+    # teams = pmap_field(str, PVector)
+    @property
+    def teams(self):
+        return {
+            "red": [p for p in self.players if p.team == Team.RED],
+            "blue": [p for p in self.players if p.team == Team.BLUE]
+        }
 
     # Information about the ball. Has the following information:
     #
