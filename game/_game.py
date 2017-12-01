@@ -37,6 +37,17 @@ class Agent:
         pass
 
 
+def run_game(state, agents):
+    """Simple function to run game between multiple players."""
+    hist = [state]
+    while True:
+        for agent in agents:
+            state = agent.decide(state)
+            hist += [state]
+            if state.is_terminal or state in hist:
+                return state
+
+
 class Game:
     def __init__(self, game_type, agents, display=True):
         self.game_type = game_type
